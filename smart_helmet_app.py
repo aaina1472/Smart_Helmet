@@ -37,14 +37,14 @@ end_location = st.text_input("Destination", "Office")
 
 if st.button("Simulate Route"):
     st.success(f"Calculating route from {start_location} to {end_location}...")
-    st.markdown("""
+    st.markdown(f"""
     <script>
-    var msg = new SpeechSynthesisUtterance("Route calculation started from {} to {}.");
+    var msg = new SpeechSynthesisUtterance("Route calculation started from {start_location} to {end_location}.");
     window.speechSynthesis.speak(msg);
     </script>
-    """.format(start_location, end_location), unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
     
-    # Simulate steps
+    # Simulated steps
     steps = [
         "Go straight for 500 meters",
         "Turn right at the next intersection",
@@ -62,4 +62,5 @@ if st.button("Simulate Route"):
         """, unsafe_allow_html=True)
         time.sleep(2)  # pause 2 sec between steps
 
-st.write("⚡ This Smart Helmet app simulates speed alerts, crash detection, and route guidance with voice feedback—all working directly in your browser.")
+st.write("⚡ Smart Helmet app simulates speed alerts, crash detection, and route guidance with browser-based voice assistant—all error-free in Streamlit.")
+
