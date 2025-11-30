@@ -1,8 +1,18 @@
 import streamlit as st
+from gtts import gTTS
+import io
 import time
 
 st.set_page_config(page_title="Smart Helmet Simulator", layout="wide")
 st.title("Smart Helmet Simulator 🏍️")
+
+# Helper function to speak text
+def speak(text):
+    tts = gTTS(text=text, lang='en')
+    audio_bytes = io.BytesIO()
+    tts.write_to_fp(audio_bytes)
+    audio_bytes.seek(0)
+    st.audio(audio_bytes, format='audio/mp3')
 
 # ---------------- SPEED MONITORING ----------------
 st.header("Speed Monitoring")
@@ -11,23 +21,13 @@ st.write(f"Current Speed: {speed} km/h")
 
 if speed > 80:
     st.warning("⚠️ Over-speeding! Slow down!")
-    st.markdown("""
-    <script>
-    var msg = new SpeechSynthesisUtterance("Warning! Over-speeding!");
-    window.speechSynthesis.speak(msg);
-    </script>
-    """, unsafe_allow_html=True)
+    speak("Warning! Over-speeding!")
 
 # ---------------- CRASH DETECTION ----------------
 st.header("Crash Detection")
 if st.button("Simulate Crash"):
     st.error("💥 Crash Detected! Alert Sent!")
-    st.markdown("""
-    <script>
-    var msg = new SpeechSynthesisUtterance("Crash detected! Please help!");
-    window.speechSynthesis.speak(msg);
-    </script>
-    """, unsafe_allow_html=True)
+    speak("Crash detected! Please help!")
 
 # ---------------- SIMULATED ROUTE / DIRECTIONS ----------------
 st.header("Navigation / Route Alerts (Simulated)")
@@ -37,12 +37,7 @@ end_location = st.text_input("Destination", "Office")
 
 if st.button("Simulate Route"):
     st.success(f"Calculating route from {start_location} to {end_location}...")
-    st.markdown(f"""
-    <script>
-    var msg = new SpeechSynthesisUtterance("Route calculation started from {start_location} to {end_location}.");
-    window.speechSynthesis.speak(msg);
-    </script>
-    """, unsafe_allow_html=True)
+    speak(f"Route calculation started from {start_location} to {end_location}.")
     
     # Simulated steps
     steps = [
@@ -54,13 +49,7 @@ if st.button("Simulate Route"):
     
     for step in steps:
         st.info(step)
-        st.markdown(f"""
-        <script>
-        var msg = new SpeechSynthesisUtterance("{step}");
-        window.speechSynthesis.speak(msg);
-        </script>
-        """, unsafe_allow_html=True)
-        time.sleep(2)  # pause 2 sec between steps
+        speak(step)
+        time.sleep(1)  # pause 1 sec between steps
 
-st.write("⚡ Smart Helmet app simulates speed alerts, crash detection, and route guidance with browser-based voice assistant—all error-free in Streamlit.")
-
+st.write("⚡ Smart Helmet app simulates speed alerts, crash detection, and route guidance with working voice assistant using gTTS.")
